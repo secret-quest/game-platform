@@ -21,7 +21,11 @@
       >
         Share Wrong Riddle Piece
       </button>
-      <p>Timer: <%= @timer %> seconds</p>
+      <%= if @timer > 0 do %>
+        <p>Timer: <%= @timer %> seconds</p>
+      <% else %>
+        <p>Time is up!</p>
+      <% end %>
     </div>
     <div
       class="chat-messages flex-grow overflow-y-auto p-3"

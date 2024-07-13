@@ -41,10 +41,17 @@ defmodule SecretQuestWeb.HomeLive do
 
   def handle_info(:tick, socket) do
     if socket.assigns.running do
-      Process.send_after(self(), :tick, 1000)
-      {:noreply, update(socket, :timer, &(&1 - 1))}
+      new_timer_time = socket.assigns.timer - 1
+      if new_timer_time > 0 do
+        Process.send_after(self(), :tick, 1000)
+        {:noreply, assign(socket, :timer, new_timer_time) |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
+      else
+        {:noreply, socket |> assign( :running, false)
+        |> assign( :timer, 0)
+        |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
+      end
     else
-      {:noreply, socket}
+      {:noreply, stream(socket, :presences, SecretQuestWeb.Presence.list_online_users())}
     end
   end
 
