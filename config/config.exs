@@ -11,7 +11,7 @@ config :secret_quest,
   ecto_repos: [SecretQuest.Repo],
   generators: [timestamp_type: :utc_datetime],
   openai_api_key: System.get_env("OPENAI_API_KEY")
-  
+
 # Configures the endpoint
 config :secret_quest, SecretQuestWeb.Endpoint,
   url: [host: "localhost"],
@@ -65,7 +65,7 @@ config :phoenix, :json_library, Jason
 config :secret_quest, SecretQuest.Scheduler,
   jobs: [
     # Every minute
-    {"*/15 * * * *", fn -> SecretQuest.RiddleGenerator.generate_riddle() end}
+    {"*/15 * * * *", {SecretQuest.RiddleGenerator, :generate_riddle, []}}
   ]
 
 # Import environment specific config. This must remain at the bottom
