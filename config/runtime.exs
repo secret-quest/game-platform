@@ -21,6 +21,9 @@ if System.get_env("PHX_SERVER") do
 end
 
 if config_env() == :prod do
+  config :secret_quest,
+    openai_api_key: System.get_env("OPENAI_API_KEY")
+
   database_url =
     System.get_env("DATABASE_URL") ||
       raise """
