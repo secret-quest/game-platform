@@ -1,33 +1,33 @@
-<div class="container w-[1280px] h-[720px] rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
-  <div class="contact-list w-[200px] shadow-md overflow-y-auto" id="contact-list">
-    <div class="contact p-3 hover:bg-amber-300 cursor-pointer shadow-md text-amber-900">
+<div class="container w-[1280px] h-[720px] rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear bg-[#1a1a1a] text-[#e1e1e1]">
+  <div class="contact-list w-[200px] shadow-md overflow-y-auto bg-[#1a1a1a] border-r border-[#333]">
+    <div class="contact p-3 hover:bg-[#333] cursor-pointer shadow-md text-[#e1e1e1]">
       Group
     </div>
     <%= for {_, %{id: address}} <- @streams.presences do %>
       <%= if @address !== address do %>
-        <div class="contact p-3 hover:bg-amber-300 cursor-pointer shadow-md text-amber-900">
+        <div class="contact p-3 hover:bg-[#333] cursor-pointer shadow-md text-[#e1e1e1]">
           <%= address %>
         </div>
       <% end %>
     <% end %>
   </div>
-  <div class="chat-area flex-grow flex flex-col rounded-br-lg">
-    <div class="chat-header bg-gradient-to-r p-3 flex justify-between items-center shadow-md rounded-tr-lg">
-      <h1 class="font-bold text-amber-900">Floor: 1</h1>
+  <div class="chat-area flex-grow flex flex-col rounded-br-lg bg-[#1a1a1a]">
+    <div class="chat-header bg-gradient-to-r from-[#333] to-[#444] p-3 flex justify-between items-center shadow-md rounded-tr-lg border-b border-[#333]">
+      <h1 class="font-bold text-[#e1e1e1]">Floor: 1</h1>
       <%= if @timer > 0 do %>
-        <p class=" text-amber-900">Timer: <%= @timer %> seconds</p>
+        <p class="text-[#e1e1e1]">Timer: <%= @timer %> seconds</p>
       <% else %>
-        <p class=" text-amber-900">Time is up!</p>
+        <p class="text-[#e1e1e1]">Time is up!</p>
       <% end %>
     </div>
     <div
       id="hintContainer"
-      class="hint-container flex flex-wrap justify-center items-center gap-2 mb-2 p-2"
+      class="hint-container flex flex-wrap justify-center items-center gap-2 mb-2 p-2 bg-[#1a1a1a]"
       phx-update="ignore"
     >
       <%= for riddle_part <- @riddle_parts do %>
         <div
-          class="tag-item p-2 bg-amber-500 text-amber-900 rounded-full shadow-md cursor-pointer transition-transform transform hover:scale-105"
+          class="tag-item p-2 bg-[#444] text-[#e1e1e1] rounded-full shadow-md cursor-pointer transition-transform transform hover:scale-105"
           draggable="true"
           id={"riddle_part_#{riddle_part}"}
         >
@@ -36,34 +36,33 @@
       <% end %>
     </div>
     <div
-      class="chat-messages flex-grow overflow-y-auto p-3 text-amber-900"
+      class="chat-messages flex-grow overflow-y-auto p-3 text-[#e1e1e1]"
       id="chat-messages"
       phx-update="stream"
     >
       <%= for {_, message} <- @streams.messages do %>
         <%= if message.user == @address do %>
-          <div class="message user-message bg-amber-300 rounded-lg p-2 mb-2 max-w-[70%] self-end ml-auto shadow-sm transition-opacity opacity-0 animate-fadeIn">
+          <div class="message user-message bg-[#555] rounded-lg p-2 mb-2 max-w-[70%] self-end ml-auto shadow-sm transition-opacity opacity-0 animate-fadeIn">
             <%= message.body %>
           </div>
         <% else %>
           <%= if message.user == "floor-admin" do %>
-            <div class="message bot-message bg-amber-400 rounded-lg p-2 mb-2 max-w-[100%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
+            <div class="message bot-message bg-[#666] rounded-lg p-2 mb-2 max-w-[100%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
               <%= message.body %>
             </div>
           <% else %>
-            <div class="message bot-message bg-amber-200 rounded-lg p-2 mb-2 max-w-[70%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
+            <div class="message bot-message bg-[#444] rounded-lg p-2 mb-2 max-w-[70%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
               <%= message.body %>
             </div>
           <% end %>
         <% end %>
       <% end %>
     </div>
-    <form class="chat-input flex p-3 shadow-md border-yellow-300" phx-submit="send_message">
+    <form class="chat-input flex p-3 shadow-md border-[#333]" phx-submit="send_message">
       <input
         type="text"
         name="message"
-        style="background-color: rgba(249, 229, 152, 0.8)"
-        class="flex-grow p-2 border border-amber-300 text-amber-900 rounded-l focus:outline-none focus:ring-2 focus:ring-amber-500"
+        class="flex-grow p-2 border border-[#555] text-[#e1e1e1] rounded-l bg-[#2a2a2a] focus:outline-none focus:ring-2 focus:ring-[#666]"
         placeholder="Type your message..."
         id="message"
         autofocus
@@ -71,7 +70,7 @@
       <button
         id="send-button"
         type="submit"
-        class="bg-amber-500 text-amber-900 px-4 py-2 rounded-r hover:bg-amber-600 shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+        class="bg-[#666] text-[#e1e1e1] px-4 py-2 rounded-r hover:bg-[#777] shadow-md focus:outline-none focus:ring-2 focus:ring-[#666]"
       >
         Send
       </button>
