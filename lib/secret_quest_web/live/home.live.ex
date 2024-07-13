@@ -28,13 +28,9 @@ defmodule SecretQuestWeb.HomeLive do
         SecretQuestWeb.Presence.track_user(params["address"], %{id: params["address"]})
         SecretQuestWeb.Presence.subscribe()
         SecretQuestWeb.Endpoint.subscribe("tower:lobby")
-        # {:ok, riddle} = RiddleGenerator.generate_riddle()
-
-        # riddle_part = riddle["riddle"]["description"] |> String.split((" ")) |> Enum.take_random(4) |> Enum.join(" ")
 
         socket
-        # |> assign(:riddle_part, riddle_part)
-        |> stream(:presences, SecretQuestWeb.Presence.list_online_users() |> Enum.uniq())
+        |> stream(:presences, SecretQuestWeb.Presence.list_online_users())
       else
         socket
       end
@@ -94,11 +90,10 @@ defmodule SecretQuestWeb.HomeLive do
     end
   end
 
-  def handle_info({SecretQuestWeb.Presence, {:join, _presence}}, socket) do
-    {:noreply, stream(socket, :presences, SecretQuestWeb.Presence.list_online_users())}
-  end
-
-  def handle_info({SecretQuestWeb.Presence, {:leave, _presence}}, socket) do
-    {:noreply, stream(socket, :presences, SecretQuestWeb.Presence.list_online_users())}
+  def handle_info({SecretQuestWeb.Presence, {action, _presence}}, socket) when action in [:leave, :join] do
+    {:noreply,
+    socket
+    |> stream(:presences, SecretQuestWeb.Presence.list_online_users())
+  }
   end
 end
