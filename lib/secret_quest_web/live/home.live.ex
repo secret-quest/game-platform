@@ -1,19 +1,25 @@
 defmodule SecretQuestWeb.HomeLive do
   use Phoenix.LiveView
 
+  alias SecretQuest.RiddleDivider
+
   def mount(params, _session, socket) do
+    riddle_parts = RiddleDivider.divide_riddle_for_level(1)
+
     socket =
       assign(socket, :address, params["address"])
-      |> assign(:riddle_part, "")
+      |> assign(:riddle_parts, riddle_parts)
       |> assign(:timer, 300)
       |> assign(:running, true)
       |> stream(:presences, [])
-      |> stream(:messages, [%{
-        user: "floor-admin",
-        body: "Welcome to the first floor game! Please wait for other players to join.",
-        timestamp: DateTime.utc_now(),
-        id: Ecto.UUID.generate()
-      }])
+      |> stream(:messages, [
+        %{
+          user: "floor-admin",
+          body: "Welcome to the first floor game! Please wait for other players to join.",
+          timestamp: DateTime.utc_now(),
+          id: Ecto.UUID.generate()
+        }
+      ])
 
     Process.send_after(self(), :tick, 1000)
 
@@ -58,13 +64,19 @@ defmodule SecretQuestWeb.HomeLive do
   def handle_info(:tick, socket) do
     if socket.assigns.running do
       new_timer_time = socket.assigns.timer - 1
+
       if new_timer_time > 0 do
         Process.send_after(self(), :tick, 1000)
-        {:noreply, assign(socket, :timer, new_timer_time) |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
+
+        {:noreply,
+         assign(socket, :timer, new_timer_time)
+         |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
       else
-        {:noreply, socket |> assign( :running, false)
-        |> assign( :timer, 0)
-        |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
+        {:noreply,
+         socket
+         |> assign(:running, false)
+         |> assign(:timer, 0)
+         |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
       end
     else
       {:noreply, stream(socket, :presences, SecretQuestWeb.Presence.list_online_users())}

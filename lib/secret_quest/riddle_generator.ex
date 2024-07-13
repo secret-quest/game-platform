@@ -12,7 +12,7 @@ defmodule SecretQuest.RiddleGenerator do
         model: "gpt-4o",
         messages: [
           ChatMessage.user(
-            "Can you generate a long riddle with an answer and return it in JSON format?
+            "Can you generate a riddle with an answer and return it in JSON format?
             The JSON returned looks like this:
             {
               \"riddle\": {
@@ -28,12 +28,14 @@ defmodule SecretQuest.RiddleGenerator do
     case Chat.Completions.create(openai, chat_req) do
       {:ok, %{"choices" => [%{"message" => %{"content" => json}}]}} ->
         json = Jason.decode!(json)
+
         RiddlesRepo.insert_riddle(%{
           description: json["riddle"]["description"],
           answer: json["riddle"]["answer"],
           hash: :crypto.hash(:sha256, json["riddle"]["description"]) |> Base.encode16(),
           solved: false
         })
+
         :ok
 
       {:error, reason} ->

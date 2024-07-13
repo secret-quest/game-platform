@@ -1,4 +1,4 @@
-<div class="w-[1000px] h-[600px] bg-white border border-gray-300 rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
+<div class="w-[1280px] h-[720px] bg-white border border-gray-300 rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
   <div class="contact-list w-[200px] border-r border-gray-300 overflow-y-auto" id="contact-list">
     <div class="contact p-3 hover:bg-gray-100 cursor-pointer border-b-2">Group</div>
     <%= for {_, %{id: address}} <- @streams.presences do %>
@@ -9,7 +9,6 @@
   </div>
   <div class="chat-area flex-grow flex flex-col">
     <div class="chat-header bg-blue-500 p-3 flex justify-around">
-      <p><%= @riddle_part %></p>
       <button
         class="header-button bg-white text-blue-500 px-3 py-1 rounded hover:bg-blue-100"
         id="share-correct-riddle"
@@ -29,6 +28,17 @@
       <% end %>
     </div>
     <div
+      id="hintContainer"
+      class="hint-container flex flex-wrap justify-center bg-blue-200 items-center gap-2 mb-2"
+      phx-update="ignore"
+    >
+      <%= for riddle_part <- @riddle_parts do %>
+        <div class="tag-item" draggable="true" id={"riddle_part_#{riddle_part}"}>
+          <span class="rounded-full"><%= riddle_part %></span>
+        </div>
+      <% end %>
+    </div>
+    <div
       class="chat-messages flex-grow overflow-y-auto p-3"
       id="chat-messages"
       phx-update="stream"
@@ -40,14 +50,14 @@
           </div>
         <% else %>
           <%= if message.user == "floor-admin" do %>
-          <div class="message bot-message bg-yellow-400 text-black rounded-lg p-2 mb-2 max-w-[100%] self-start">
-            <%= message.body %>
-          </div>
+            <div class="message bot-message bg-yellow-400 text-black rounded-lg p-2 mb-2 max-w-[100%] self-start">
+              <%= message.body %>
+            </div>
           <% else %>
-          <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start">
-            <%= message.body %>
-          </div>
-        <% end %>
+            <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start">
+              <%= message.body %>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
     </div>
@@ -58,7 +68,6 @@
         class="flex-grow p-2 border border-gray-300 rounded-l"
         placeholder="Type your message..."
         id="message"
-        phx-hook="ResetAndSubmitInput"
         autofocus
       />
       <button
@@ -71,3 +80,17 @@
     </form>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const tagContainer = document.getElementById('hintContainer');
+      if (tagContainer) {
+          Sortable.create(tagContainer, {
+              animation: 150,  // Animation speed in ms
+              ghostClass: 'sortable-ghost',  // Class name for the drop placeholder
+              chosenClass: 'sortable-chosen',  // Class name for the chosen item
+              dragClass: 'sortable-drag',  // Class name for the dragging item
+          });
+      }
+  });
+</script>

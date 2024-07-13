@@ -7,3 +7,49 @@
 body {
     background: linear-gradient(45deg, #000428, #004e92);
 }
+
+.hint-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    min-height: 50px;
+}
+.tag-item {
+    background-color: #e6f2ff;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    cursor: move;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+.tag-item.dragging {
+    opacity: 0.5;
+    background-color: #b3d9ff;
+}
+.remove-btn {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.tag-placeholder {
+    background-color: #f0f0f0;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+}
+
+.sortable-ghost {
+    opacity: 0.4;
+}
+
+.sortable-chosen {
+    background-color: #f0f0f0;
+}
+
+.sortable-drag {
+    cursor: grabbing;
+}
