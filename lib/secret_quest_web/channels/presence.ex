@@ -43,7 +43,10 @@ defmodule SecretQuestWeb.Presence do
   end
 
   # Also add agents
-  def list_online_users(), do: list("online_users") |> Enum.map(fn {_id, presence} -> presence end)
+  def list_online_users() do
+    list("online_users")
+    |> Map.values()
+  end
 
   def track_user(address, params), do: track(self(), "online_users", address, params)
 

@@ -1,10 +1,10 @@
 <div class="w-[800px] h-[600px] bg-white border border-gray-300 rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
   <div class="contact-list w-[200px] border-r border-gray-300 overflow-y-auto" id="contact-list">
-    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Alice</div>
-    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Bob</div>
-    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Charlie</div>
-    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">David</div>
-    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Eve</div>
+    <%= for {_, %{id: address}} <- @streams.presences do %>
+      <%= if @address !== address do %>
+        <div class="contact p-3 hover:bg-gray-100 cursor-pointer"><%= address %></div>
+      <% end %>
+    <% end %>
   </div>
   <div class="chat-area flex-grow flex flex-col">
     <div class="chat-header bg-blue-500 p-3 flex justify-around">
