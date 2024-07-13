@@ -3,11 +3,10 @@ defmodule SecretQuest.RiddleGenerator do
   alias OpenaiEx.ChatMessage
   alias SecretQuest.Repos.RiddlesRepo
   # Ensure your API key is set in the environment variables
-  @api_key Application.compile_env(:secret_quest, :openai_api_key)
 
   def generate_riddle do
     dbg @api_key
-    openai = OpenaiEx.new(@api_key)
+    openai = OpenaiEx.new(Application.get_env(:secret_quest, :openai_api_key))
 
     chat_req =
       Chat.Completions.new(
