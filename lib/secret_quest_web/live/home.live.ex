@@ -11,7 +11,7 @@ defmodule SecretQuestWeb.HomeLive do
     socket =
       assign(socket, :address, params["address"])
       |> assign(:riddle_parts, riddle_parts)
-      |> assign(:timer, 10)
+      |> assign(:timer, 30)
       |> assign(:solved, false)
       |> assign(:hash, hash)
       |> assign(:running, true)
