@@ -17,6 +17,7 @@ defmodule SecretQuest.Application do
       # Start a worker by calling: SecretQuest.Worker.start_link(arg)
       # {SecretQuest.Worker, arg},
       SecretQuestWeb.Presence,
+      SecretQuest.Scheduler,
       # Start to serve requests, typically the last entry
       SecretQuestWeb.Endpoint
     ]

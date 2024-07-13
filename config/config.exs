@@ -61,6 +61,12 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :secret_quest, SecretQuest.Scheduler,
+  jobs: [
+    # Every minute
+    {"* * * * *", fn -> IO.inspect("cron") end}
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
