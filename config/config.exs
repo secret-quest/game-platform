@@ -70,3 +70,5 @@ config :secret_quest, SecretQuest.Scheduler,
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+config :openai, :api_key, System.get_env("OPENAI_API_KEY")
