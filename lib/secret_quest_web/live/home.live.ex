@@ -10,7 +10,7 @@ defmodule SecretQuestWeb.HomeLive do
       |> stream(:presences, [])
       |> stream(:messages, [%{
         user: "floor-admin",
-        body: "Welcome to the game! Please wait for other players to join.",
+        body: "Welcome to the first floor game! Please wait for other players to join.",
         timestamp: DateTime.utc_now(),
         id: Ecto.UUID.generate()
       }])
