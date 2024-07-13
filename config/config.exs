@@ -9,8 +9,9 @@ import Config
 
 config :secret_quest,
   ecto_repos: [SecretQuest.Repo],
-  generators: [timestamp_type: :utc_datetime]
-
+  generators: [timestamp_type: :utc_datetime],
+  openai_api_key: System.get_env("OPENAI_API_KEY")
+  
 # Configures the endpoint
 config :secret_quest, SecretQuestWeb.Endpoint,
   url: [host: "localhost"],
@@ -70,5 +71,3 @@ config :secret_quest, SecretQuest.Scheduler,
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
-
-config :openai, :api_key, System.get_env("OPENAI_API_KEY")
