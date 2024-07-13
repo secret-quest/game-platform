@@ -11,11 +11,13 @@ defmodule SecretQuest.RiddleDivider do
 
     latest_unsolved_riddle = RiddlesRepo.get_latest_riddle()
 
-    latest_unsolved_riddle.description
+    parts = latest_unsolved_riddle.description
     |> String.split(" ")
     |> Enum.chunk_every(4)
     |> Enum.take_random(random_pieces)
     |> Enum.uniq()
     |> Enum.map(&Enum.join(&1, " "))
+
+    {parts, latest_unsolved_riddle.hash}
   end
 end
