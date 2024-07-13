@@ -8,7 +8,7 @@
     <% end %>
   </div>
   <div class="chat-area flex-grow flex flex-col">
-    <div class="chat-header bg-gradient-to-r from-blue-500 to-blue-700 p-3 flex justify-around text-white">
+    <div class="chat-header bg-gradient-to-r from-blue-500 to-blue-700 p-3 flex justify-between items-center text-white shadow-md">
       <h1 class="text-xl font-bold">Floor: 1</h1>
       <%= if @timer > 0 do %>
         <p class="text-lg">Timer: <%= @timer %> seconds</p>
@@ -22,7 +22,7 @@
       phx-update="ignore"
     >
       <%= for riddle_part <- @riddle_parts do %>
-        <div class="tag-item p-2 bg-white rounded-full shadow-md cursor-pointer" draggable="true" id={"riddle_part_#{riddle_part}"}>
+        <div class="tag-item p-2 bg-white rounded-full shadow-md cursor-pointer transition-transform transform hover:scale-105" draggable="true" id={"riddle_part_#{riddle_part}"}>
           <span class="tag-text"><%= riddle_part %></span>
         </div>
       <% end %>
@@ -34,23 +34,23 @@
     >
       <%= for {_, message} <- @streams.messages do %>
         <%= if message.user == @address do %>
-          <div class="message user-message bg-blue-500 text-white rounded-lg p-2 mb-2 max-w-[70%] self-end ml-auto shadow-sm">
+          <div class="message user-message bg-blue-500 text-white rounded-lg p-2 mb-2 max-w-[70%] self-end ml-auto shadow-sm transition-opacity opacity-0 animate-fadeIn">
             <%= message.body %>
           </div>
         <% else %>
           <%= if message.user == "floor-admin" do %>
-            <div class="message bot-message bg-yellow-400 text-black rounded-lg p-2 mb-2 max-w-[100%] self-start shadow-sm">
+            <div class="message bot-message bg-yellow-400 text-black rounded-lg p-2 mb-2 max-w-[100%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
               <%= message.body %>
             </div>
           <% else %>
-            <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start shadow-sm">
+            <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
               <%= message.body %>
             </div>
           <% end %>
         <% end %>
       <% end %>
     </div>
-    <form class="chat-input flex p-3 border-t border-gray-300" phx-submit="send_message">
+    <form class="chat-input flex p-3 border-t border-gray-300 bg-gray-100" phx-submit="send_message">
       <input
         type="text"
         name="message"
@@ -83,3 +83,13 @@
       }
   });
 </script>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+</style>
