@@ -5,8 +5,15 @@
     </div>
     <%= for {_, %{id: address}} <- @streams.presences do %>
       <%= if @address !== address do %>
-        <div class="contact p-3 hover:bg-[#333] cursor-pointer shadow-md text-[#e1e1e1]">
+        <div
+          phx-click="select_contact"
+          phx-value-address={"#{address}"}
+          class={"contact p-3 hover:bg-red-500 cursor-pointer shadow-md text-[#e1e1e1] #{if address in @selected_contacts, do: "bg-red-700" }"}
+        >
           <%= EmojiConverter.binary_to_emoji(address) %> <%= last_four_characters(address) %>
+          <%= if address in @selected_contacts do %>
+            🗳️
+          <% end %>
         </div>
       <% end %>
     <% end %>
@@ -56,11 +63,13 @@
         <% else %>
           <%= if message.user == "floor-admin" do %>
             <div class="message bot-message bg-[#666] rounded-lg p-2 mb-2 max-w-[100%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
-              👁️‍🗨️ FLOORMASTER <br> <%= message.body %>
+              👁️‍🗨️ FLOORMASTER <br /> <%= message.body %>
             </div>
           <% else %>
             <div class="message bot-message bg-[#444] rounded-lg p-2 mb-2 max-w-[70%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
-              <%= EmojiConverter.binary_to_emoji(message.user) %> <%= last_four_characters(message.user) %> <br> <%= message.body %>
+              <%= EmojiConverter.binary_to_emoji(message.user) %> <%= last_four_characters(
+                message.user
+              ) %> <br /> <%= message.body %>
             </div>
           <% end %>
         <% end %>

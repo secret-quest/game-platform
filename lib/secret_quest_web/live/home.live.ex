@@ -15,6 +15,7 @@ defmodule SecretQuestWeb.HomeLive do
       |> assign(:solved, false)
       |> assign(:hash, hash)
       |> assign(:running, true)
+      |> assign(:selected_contacts, [])
       |> stream(:presences, [])
       |> stream(:messages, [])
 
@@ -62,32 +63,54 @@ defmodule SecretQuestWeb.HomeLive do
        socket
        |> stream(:presences, SecretQuestWeb.Presence.list_online_users())
        |> stream_insert(:messages, message_data)}
+    else
+      solved? = RiddleEvaluator.correct_riddle_answer?(socket.assigns.hash, message)
 
-      else
-        solved? = RiddleEvaluator.correct_riddle_answer?(socket.assigns.hash, message)
-
-        {:noreply,
-         socket
-         |> assign(:solved, solved?)
-         |> stream(:presences, SecretQuestWeb.Presence.list_online_users())
-         |> stream(:messages, [
-          %{
-            user: "floor-admin",
-            body:
-              "Your answer is #{if solved?, do: "correct. Time for the next level!", else: "incorrect. You have been eliminated!"}",
-            timestamp: DateTime.utc_now(),
-            id: Ecto.UUID.generate()
-          }
-        ], reset: true)}
+      {:noreply,
+       socket
+       |> assign(:solved, solved?)
+       |> stream(:presences, SecretQuestWeb.Presence.list_online_users())
+       |> stream(
+         :messages,
+         [
+           %{
+             user: "floor-admin",
+             body:
+               "Your answer is #{if solved?, do: "correct. Time for the next level!", else: "incorrect. You have been eliminated!"}",
+             timestamp: DateTime.utc_now(),
+             id: Ecto.UUID.generate()
+           }
+         ],
+         reset: true
+       )}
     end
+  end
+
+  def handle_event("select_contact", %{"address" => address}, socket) do
+    selected_contacts = socket.assigns.selected_contacts
+
+    new_selected_contacts =
+      if address in selected_contacts do
+        List.delete(selected_contacts, address)
+      else
+        [address | selected_contacts]
+      end
+
+    {:noreply,
+     socket
+     |> stream(:presences, SecretQuestWeb.Presence.list_online_users())
+     |> assign(:selected_contacts, new_selected_contacts)}
   end
 
   def handle_info(:tick, socket) do
     if socket.assigns.running do
       Process.send_after(self(), :tick, 1000)
+
       if socket.assigns.timer > 0 do
         {:noreply,
-        socket |> assign(:timer, socket.assigns.timer - 1) |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
+         socket
+         |> assign(:timer, socket.assigns.timer - 1)
+         |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
       else
         {:noreply, assign(socket, :running, false)}
       end
