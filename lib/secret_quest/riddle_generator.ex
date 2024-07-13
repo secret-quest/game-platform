@@ -5,7 +5,6 @@ defmodule SecretQuest.RiddleGenerator do
   # Ensure your API key is set in the environment variables
 
   def generate_riddle do
-    dbg @api_key
     openai = OpenaiEx.new(Application.get_env(:secret_quest, :openai_api_key))
 
     chat_req =
