@@ -64,7 +64,7 @@ config :phoenix, :json_library, Jason
 config :secret_quest, SecretQuest.Scheduler,
   jobs: [
     # Every minute
-    {"* * * * *", fn -> IO.inspect("cron") end}
+    {"*/15 * * * *", fn -> SecretQuest.RiddleGenerator.generate_riddle() end}
   ]
 
 # Import environment specific config. This must remain at the bottom

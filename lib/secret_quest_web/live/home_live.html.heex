@@ -1,8 +1,9 @@
 <div class="w-[1000px] h-[600px] bg-white border border-gray-300 rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
   <div class="contact-list w-[200px] border-r border-gray-300 overflow-y-auto" id="contact-list">
+    <div class="contact p-3 hover:bg-gray-100 cursor-pointer border-b-2">Group</div>
     <%= for {_, %{id: address}} <- @streams.presences do %>
       <%= if @address !== address do %>
-        <div class="contact p-3 hover:bg-gray-100 cursor-pointer"><%= address %></div>
+        <div class="contact p-3 hover:bg-gray-100 cursor-pointer border-b-2"><%= address %></div>
       <% end %>
     <% end %>
   </div>

@@ -1,7 +1,7 @@
 defmodule SecretQuest.RiddleGenerator do
   alias OpenaiEx.Chat
   alias OpenaiEx.ChatMessage
-
+  alias SecretQuest.Repos.RiddlesRepo
   # Ensure your API key is set in the environment variables
   @api_key System.get_env("OPENAI_API_KEY")
 
@@ -27,11 +27,19 @@ defmodule SecretQuest.RiddleGenerator do
       )
 
     case Chat.Completions.create(openai, chat_req) do
-      {:ok, %{"choices" => [%{"message" => %{"content" => text}}]}} ->
-        {:ok, Jason.decode!(text)}
+      {:ok, %{"choices" => [%{"message" => %{"content" => json}}]}} ->
+        json = Jason.decode!(json)
+        RiddlesRepo.insert_riddle(%{
+          description: json["riddle"]["description"],
+          answer: json["riddle"]["answer"],
+          hash: :crypto.hash(:sha256, json["riddle"]["description"]) |> Base.encode16(),
+          solved: false
+        })
+        :ok
 
       {:error, reason} ->
-        {:error, "Failed to generate riddle: #{reason}"}
+        IO.inspect("Failed to generate riddle: #{reason}")
+        :error
     end
   end
 end
