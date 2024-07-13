@@ -1,5 +1,5 @@
 <div class="container w-[1280px] h-[720px] rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
-  <div class="contact-list w-[200px] border-r overflow-y-auto" id="contact-list">
+  <div class="contact-list w-[200px] shadow-md overflow-y-auto" id="contact-list">
     <div class="contact p-3 hover:bg-amber-300 cursor-pointer shadow-md text-amber-900">
       Group
     </div>
@@ -27,7 +27,7 @@
     >
       <%= for riddle_part <- @riddle_parts do %>
         <div
-          class="tag-item p-2 bg-amber-400 text-amber-900 rounded-full shadow-md cursor-pointer transition-transform transform hover:scale-105"
+          class="tag-item p-2 bg-amber-500 text-amber-900 rounded-full shadow-md cursor-pointer transition-transform transform hover:scale-105"
           draggable="true"
           id={"riddle_part_#{riddle_part}"}
         >
@@ -62,7 +62,8 @@
       <input
         type="text"
         name="message"
-        class="flex-grow p-2 border border-yellow-300 bg-yellow-200 rounded-l focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        style="background-color: rgba(249, 229, 152, 0.8)"
+        class="flex-grow p-2 border border-amber-300 text-amber-900 rounded-l focus:outline-none focus:ring-2 focus:ring-amber-500"
         placeholder="Type your message..."
         id="message"
         autofocus
@@ -70,7 +71,7 @@
       <button
         id="send-button"
         type="submit"
-        class="bg-yellow-500 px-4 py-2 rounded-r hover:bg-yellow-600 shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        class="bg-amber-500 text-amber-900 px-4 py-2 rounded-r hover:bg-amber-600 shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500"
       >
         Send
       </button>
