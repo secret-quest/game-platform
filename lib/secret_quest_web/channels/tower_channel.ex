@@ -20,7 +20,8 @@ defmodule SecretQuestWeb.TowerChannel do
         online_at: inspect(System.system_time(:second))
       })
 
-    push(socket, "presence_state", Presence.list(socket))
+
+      push(socket, "presence_state", Presence.list(socket))
     {:noreply, socket}
   end
 

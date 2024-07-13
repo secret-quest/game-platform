@@ -1,4 +1,5 @@
 defmodule SecretQuestWeb.Router do
+  alias SecretQuestWeb.HomeLive
   use SecretQuestWeb, :router
 
   pipeline :browser do
@@ -14,10 +15,10 @@ defmodule SecretQuestWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", SecretQuestWeb do
+  scope "/" do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", HomeLive
   end
 
   # Other scopes may use custom stacks.
