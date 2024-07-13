@@ -11,16 +11,14 @@ defmodule SecretQuest.RiddleGenerator do
       Chat.Completions.new(
         model: "gpt-4o",
         messages: [
-          ChatMessage.user(
-            "Can you generate a riddle with an answer and return it in JSON format?
+          ChatMessage.user("Can you generate a riddle with an answer and return it in JSON format?
             The JSON returned looks like this:
             {
               \"riddle\": {
                 \"description\": \"\",
                 \"answer\": \"\"
             }
-            "
-          )
+            ")
         ],
         response_format: %{"type" => "json_object"}
       )

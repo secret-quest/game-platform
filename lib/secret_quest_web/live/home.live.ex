@@ -90,10 +90,10 @@ defmodule SecretQuestWeb.HomeLive do
     end
   end
 
-  def handle_info({SecretQuestWeb.Presence, {action, _presence}}, socket) when action in [:leave, :join] do
+  def handle_info({SecretQuestWeb.Presence, {action, _presence}}, socket)
+      when action in [:leave, :join] do
     {:noreply,
-    socket
-    |> stream(:presences, SecretQuestWeb.Presence.list_online_users())
-  }
+     socket
+     |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
   end
 end

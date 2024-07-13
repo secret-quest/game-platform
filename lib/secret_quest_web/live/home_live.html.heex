@@ -1,60 +1,68 @@
-<div class="container w-[1280px] h-[720px] bg-white border border-gray-300 rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
-  <div class="contact-list w-[200px] border-r border-gray-300 overflow-y-auto" id="contact-list">
-    <div class="contact p-3 hover:bg-gray-100 cursor-pointer border-b-2">Group</div>
+<div class="container w-[1280px] h-[720px] rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
+  <div class="contact-list w-[200px] border-r overflow-y-auto" id="contact-list">
+    <div class="contact p-3 hover:bg-amber-300 cursor-pointer shadow-md text-amber-900">
+      Group
+    </div>
     <%= for {_, %{id: address}} <- @streams.presences do %>
       <%= if @address !== address do %>
-        <div class="contact p-3 hover:bg-gray-100 cursor-pointer border-b-2"><%= address %></div>
+        <div class="contact p-3 hover:bg-amber-300 cursor-pointer shadow-md text-amber-900">
+          <%= address %>
+        </div>
       <% end %>
     <% end %>
   </div>
-  <div class="chat-area flex-grow flex flex-col">
-    <div class="chat-header bg-gradient-to-r from-blue-500 to-blue-700 p-3 flex justify-between items-center text-white shadow-md">
-      <h1 class="text-xl font-bold">Floor: 1</h1>
+  <div class="chat-area flex-grow flex flex-col rounded-br-lg">
+    <div class="chat-header bg-gradient-to-r p-3 flex justify-between items-center shadow-md rounded-tr-lg">
+      <h1 class="font-bold text-amber-900">Floor: 1</h1>
       <%= if @timer > 0 do %>
-        <p class="text-lg">Timer: <%= @timer %> seconds</p>
+        <p class=" text-amber-900">Timer: <%= @timer %> seconds</p>
       <% else %>
-        <p class="text-lg">Time is up!</p>
+        <p class=" text-amber-900">Time is up!</p>
       <% end %>
     </div>
     <div
       id="hintContainer"
-      class="hint-container flex flex-wrap justify-center bg-blue-100 items-center gap-2 mb-2 p-2 rounded-lg"
+      class="hint-container flex flex-wrap justify-center items-center gap-2 mb-2 p-2"
       phx-update="ignore"
     >
       <%= for riddle_part <- @riddle_parts do %>
-        <div class="tag-item p-2 bg-white rounded-full shadow-md cursor-pointer transition-transform transform hover:scale-105" draggable="true" id={"riddle_part_#{riddle_part}"}>
+        <div
+          class="tag-item p-2 bg-amber-400 text-amber-900 rounded-full shadow-md cursor-pointer transition-transform transform hover:scale-105"
+          draggable="true"
+          id={"riddle_part_#{riddle_part}"}
+        >
           <span class="tag-text"><%= riddle_part %></span>
         </div>
       <% end %>
     </div>
     <div
-      class="chat-messages flex-grow overflow-y-auto p-3 bg-gray-50"
+      class="chat-messages flex-grow overflow-y-auto p-3 text-amber-900"
       id="chat-messages"
       phx-update="stream"
     >
       <%= for {_, message} <- @streams.messages do %>
         <%= if message.user == @address do %>
-          <div class="message user-message bg-blue-500 text-white rounded-lg p-2 mb-2 max-w-[70%] self-end ml-auto shadow-sm transition-opacity opacity-0 animate-fadeIn">
+          <div class="message user-message bg-amber-300 rounded-lg p-2 mb-2 max-w-[70%] self-end ml-auto shadow-sm transition-opacity opacity-0 animate-fadeIn">
             <%= message.body %>
           </div>
         <% else %>
           <%= if message.user == "floor-admin" do %>
-            <div class="message bot-message bg-yellow-400 text-black rounded-lg p-2 mb-2 max-w-[100%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
+            <div class="message bot-message bg-amber-400 rounded-lg p-2 mb-2 max-w-[100%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
               <%= message.body %>
             </div>
           <% else %>
-            <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
+            <div class="message bot-message bg-amber-200 rounded-lg p-2 mb-2 max-w-[70%] self-start shadow-sm transition-opacity opacity-0 animate-fadeIn">
               <%= message.body %>
             </div>
           <% end %>
         <% end %>
       <% end %>
     </div>
-    <form class="chat-input flex p-3 border-t border-gray-300 bg-gray-100" phx-submit="send_message">
+    <form class="chat-input flex p-3 shadow-md border-yellow-300" phx-submit="send_message">
       <input
         type="text"
         name="message"
-        class="flex-grow p-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="flex-grow p-2 border border-yellow-300 bg-yellow-200 rounded-l focus:outline-none focus:ring-2 focus:ring-yellow-500"
         placeholder="Type your message..."
         id="message"
         autofocus
@@ -62,7 +70,7 @@
       <button
         id="send-button"
         type="submit"
-        class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="bg-yellow-500 px-4 py-2 rounded-r hover:bg-yellow-600 shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
       >
         Send
       </button>
