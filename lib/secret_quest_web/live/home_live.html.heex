@@ -12,13 +12,20 @@
     <% end %>
   </div>
   <div class="chat-area flex-grow flex flex-col rounded-br-lg bg-[#1a1a1a]">
-    <div class="chat-header bg-gradient-to-r from-[#333] to-[#444] p-3 flex justify-between items-center shadow-md rounded-tr-lg border-b border-[#333]">
-      <h1 class="font-bold text-[#e1e1e1]">Floor: 1</h1>
-      <%= if @timer > 0 do %>
-        <p class="text-[#e1e1e1]">Timer: <%= @timer %> seconds</p>
-      <% else %>
-        <p class="text-[#e1e1e1]">Time is up!</p>
-      <% end %>
+    <div class="chat-header bg-gradient-to-r from-[#333] to-[#444] p-3 flex justify-between items-center shadow-md rounded-tr-lg border-b border-[#333] relative">
+      <h1 class="font-bold text-[#e1e1e1]">Level 1</h1>
+      <div
+        id="timer"
+        phx-update="ignore"
+        class="timer-container relative w-48 h-4 bg-[#333] rounded"
+      >
+        <div id="timer-bar" class="absolute top-0 left-0 h-4 bg-[#e1e1e1] rounded"></div>
+        <p
+          id="timer-text"
+          class="absolute top-0 left-0 text-xs w-full text-center text-[#1a1a1a] font-bold leading-4"
+        >
+        </p>
+      </div>
     </div>
     <div
       id="hintContainer"
@@ -89,6 +96,25 @@
               dragClass: 'sortable-drag',  // Class name for the dragging item
           });
       }
+      
+      // Timer animation
+      const timerDuration = <%= @timer %>; // Duration in seconds
+      const timerBar = document.getElementById('timer-bar');
+      const timerText = document.getElementById('timer-text');
+      let timeLeft = timerDuration;
+      timerText.innerText = timeLeft + "s";
+
+      const timerInterval = setInterval(() => {
+          timeLeft -= 1;
+          const percentageLeft = (timeLeft / timerDuration) * 100;
+          timerBar.style.width = percentageLeft + "%";
+          timerText.innerText = timeLeft + "s";
+          
+          if (timeLeft <= 0) {
+              clearInterval(timerInterval);
+              timerText.innerText = "Time is up!";
+          }
+      }, 1000);
   });
 </script>
 
