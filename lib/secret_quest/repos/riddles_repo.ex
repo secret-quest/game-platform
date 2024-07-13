@@ -21,4 +21,8 @@ defmodule SecretQuest.Repos.RiddlesRepo do
       from r in Riddle, where: r.solved == false, order_by: [desc: r.inserted_at], limit: 1
     )
   end
+
+  def get_riddle_by_hash(hash) do
+    Repo.one(from r in Riddle, where: r.hash == ^hash, order_by: [desc: r.inserted_at], limit: 1)
+  end
 end
