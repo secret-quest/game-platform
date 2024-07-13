@@ -1,79 +1,101 @@
 <.flash_group flash={@flash} />
-    <div class="w-[800px] h-[600px] bg-white border border-gray-300 rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
-        <div class="contact-list w-[200px] border-r border-gray-300 overflow-y-auto" id="contact-list">
-            <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Alice</div>
-            <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Bob</div>
-            <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Charlie</div>
-            <div class="contact p-3 hover:bg-gray-100 cursor-pointer">David</div>
-            <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Eve</div>
-        </div>
-        <div class="chat-area flex-grow flex flex-col">
-            <div class="chat-header bg-blue-500 p-3 flex justify-around">
-                <button class="header-button bg-white text-blue-500 px-3 py-1 rounded hover:bg-blue-100" id="share-correct-riddle">Share Riddle Piece with the Group</button>
-                <button class="header-button bg-white text-blue-500 px-3 py-1 rounded hover:bg-blue-100" id="share-wrong-riddle">Share Wrong Riddle Piece</button>
-            </div>
-            <div class="chat-messages flex-grow overflow-y-auto p-3" id="chat-messages">
-                <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start">Hello! How can I help you today?</div>
-            </div>
-            <div class="chat-input flex p-3 border-t border-gray-300">
-                <input type="text" id="message-input" class="flex-grow p-2 border border-gray-300 rounded-l" placeholder="Type your message...">
-                <button id="send-button" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600">Send</button>
-            </div>
-        </div>
+<div class="w-[800px] h-[600px] bg-white border border-gray-300 rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
+  <div class="contact-list w-[200px] border-r border-gray-300 overflow-y-auto" id="contact-list">
+    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Alice</div>
+    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Bob</div>
+    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Charlie</div>
+    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">David</div>
+    <div class="contact p-3 hover:bg-gray-100 cursor-pointer">Eve</div>
+  </div>
+  <div class="chat-area flex-grow flex flex-col">
+    <div class="chat-header bg-blue-500 p-3 flex justify-around">
+      <button
+        class="header-button bg-white text-blue-500 px-3 py-1 rounded hover:bg-blue-100"
+        id="share-correct-riddle"
+      >
+        Share Riddle Piece with the Group
+      </button>
+      <button
+        class="header-button bg-white text-blue-500 px-3 py-1 rounded hover:bg-blue-100"
+        id="share-wrong-riddle"
+      >
+        Share Wrong Riddle Piece
+      </button>
     </div>
+    <div class="chat-messages flex-grow overflow-y-auto p-3" id="chat-messages">
+      <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start">
+        Hello! How can I help you today?
+      </div>
+    </div>
+    <div class="chat-input flex p-3 border-t border-gray-300">
+      <input
+        type="text"
+        id="message-input"
+        class="flex-grow p-2 border border-gray-300 rounded-l"
+        placeholder="Type your message..."
+      />
+      <button
+        id="send-button"
+        class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
+      >
+        Send
+      </button>
+    </div>
+  </div>
+</div>
 
-    <script>
-        const chatMessages = document.getElementById('chat-messages');
-        const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
-        const contactList = document.getElementById('contact-list');
-        const shareCorrectRiddle = document.getElementById('share-correct-riddle');
-        const shareWrongRiddle = document.getElementById('share-wrong-riddle');
+<script>
+  const chatMessages = document.getElementById('chat-messages');
+  const messageInput = document.getElementById('message-input');
+  const sendButton = document.getElementById('send-button');
+  const contactList = document.getElementById('contact-list');
+  const shareCorrectRiddle = document.getElementById('share-correct-riddle');
+  const shareWrongRiddle = document.getElementById('share-wrong-riddle');
 
-        function addMessage(message, isUser) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message', 'rounded-lg', 'p-2', 'mb-2', 'max-w-[70%]');
-            if (isUser) {
-                messageElement.classList.add('user-message', 'bg-blue-500', 'text-white', 'self-end', 'ml-auto');
-            } else {
-                messageElement.classList.add('bot-message', 'bg-gray-200', 'text-black', 'self-start');
-            }
-            messageElement.textContent = message;
-            chatMessages.appendChild(messageElement);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+  function addMessage(message, isUser) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', 'rounded-lg', 'p-2', 'mb-2', 'max-w-[70%]');
+      if (isUser) {
+          messageElement.classList.add('user-message', 'bg-blue-500', 'text-white', 'self-end', 'ml-auto');
+      } else {
+          messageElement.classList.add('bot-message', 'bg-gray-200', 'text-black', 'self-start');
+      }
+      messageElement.textContent = message;
+      chatMessages.appendChild(messageElement);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message) {
-                addMessage(message, true);
-                messageInput.value = '';
-                // Simulating a bot response
-                setTimeout(() => {
-                    addMessage("I'm a simple bot. I don't have real responses yet!", false);
-                }, 1000);
-            }
-        }
+  function sendMessage() {
+      const message = messageInput.value.trim();
+      if (message) {
+          addMessage(message, true);
+          messageInput.value = '';
+          // Simulating a bot response
+          setTimeout(() => {
+              addMessage("I'm a simple bot. I don't have real responses yet!", false);
+          }, 1000);
+      }
+  }
 
-        sendButton.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
+  sendButton.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+          sendMessage();
+      }
+  });
 
-        contactList.addEventListener('click', (e) => {
-            if (e.target.classList.contains('contact')) {
-                chatMessages.innerHTML = '';
-                addMessage(`Chat started with ${e.target.textContent}`, false);
-            }
-        });
+  contactList.addEventListener('click', (e) => {
+      if (e.target.classList.contains('contact')) {
+          chatMessages.innerHTML = '';
+          addMessage(`Chat started with ${e.target.textContent}`, false);
+      }
+  });
 
-        shareCorrectRiddle.addEventListener('click', () => {
-            addMessage("You shared a correct riddle piece with the group.", false);
-        });
+  shareCorrectRiddle.addEventListener('click', () => {
+      addMessage("You shared a correct riddle piece with the group.", false);
+  });
 
-        shareWrongRiddle.addEventListener('click', () => {
-            addMessage("You shared a wrong riddle piece.", false);
-        });
-    </script>
+  shareWrongRiddle.addEventListener('click', () => {
+      addMessage("You shared a wrong riddle piece.", false);
+  });
+</script>
