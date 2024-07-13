@@ -6,7 +6,7 @@
     <%= for {_, %{id: address}} <- @streams.presences do %>
       <%= if @address !== address do %>
         <div class="contact p-3 hover:bg-[#333] cursor-pointer shadow-md text-[#e1e1e1]">
-          <%= address %>
+          <%= EmojiConverter.binary_to_emoji(address) %> <%= last_four_characters(address) %>
         </div>
       <% end %>
     <% end %>

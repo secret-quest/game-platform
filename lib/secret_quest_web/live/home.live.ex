@@ -2,6 +2,7 @@ defmodule SecretQuestWeb.HomeLive do
   use Phoenix.LiveView
 
   alias SecretQuest.RiddleDivider
+  alias SecretQuest.EmojiConverter
 
   def mount(params, _session, socket) do
     riddle_parts = RiddleDivider.divide_riddle_for_level(1)
@@ -87,5 +88,14 @@ defmodule SecretQuestWeb.HomeLive do
     {:noreply,
      socket
      |> stream(:presences, SecretQuestWeb.Presence.list_online_users())}
+  end
+
+  def last_four_characters(binary) when is_binary(binary) do
+    binary
+    |> String.graphemes()
+    |> Enum.reverse()
+    |> Enum.take(4)
+    |> Enum.reverse()
+    |> Enum.join()
   end
 end
