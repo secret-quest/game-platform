@@ -1,4 +1,4 @@
-<div class="w-[800px] h-[600px] bg-white border border-gray-300 rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
+<div class="w-[1000px] h-[600px] bg-white border border-gray-300 rounded-lg flex shadow-lg opacity-0 scale-50 animate-appear">
   <div class="contact-list w-[200px] border-r border-gray-300 overflow-y-auto" id="contact-list">
     <%= for {_, %{id: address}} <- @streams.presences do %>
       <%= if @address !== address do %>
@@ -8,11 +8,12 @@
   </div>
   <div class="chat-area flex-grow flex flex-col">
     <div class="chat-header bg-blue-500 p-3 flex justify-around">
+      <p><%= @riddle_part %></p>
       <button
         class="header-button bg-white text-blue-500 px-3 py-1 rounded hover:bg-blue-100"
         id="share-correct-riddle"
       >
-        Share Riddle Piece with the Group
+        Share Riddle Piece
       </button>
       <button
         class="header-button bg-white text-blue-500 px-3 py-1 rounded hover:bg-blue-100"
@@ -20,6 +21,7 @@
       >
         Share Wrong Riddle Piece
       </button>
+      <p>Timer: <%= @timer %> seconds</p>
     </div>
     <div
       class="chat-messages flex-grow overflow-y-auto p-3"
@@ -32,9 +34,15 @@
             <%= message.body %>
           </div>
         <% else %>
+          <%= if message.user == "floor-admin" do %>
+          <div class="message bot-message bg-yellow-400 text-black rounded-lg p-2 mb-2 max-w-[100%] self-start">
+            <%= message.body %>
+          </div>
+          <% else %>
           <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start">
             <%= message.body %>
           </div>
+        <% end %>
         <% end %>
       <% end %>
     </div>

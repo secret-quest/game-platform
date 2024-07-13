@@ -1,23 +1,51 @@
 defmodule SecretQuestWeb.HomeLive do
   use Phoenix.LiveView
 
+  alias SecretQuest.RiddleGenerator
+
+
   def mount(params, _session, socket) do
     socket =
       assign(socket, :address, params["address"])
+      |> assign(:riddle_part, "")
+      |> assign(:timer, 300)
+      |> assign(:running, true)
       |> stream(:presences, [])
-      |> stream(:messages, [])
+      |> stream(:messages, [%{
+        user: "floor-admin",
+        body: "Welcome to the game! Please wait for other players to join.",
+        timestamp: DateTime.utc_now(),
+        id: Ecto.UUID.generate()
+      }])
+
+    Process.send_after(self(), :tick, 1000)
 
     socket =
       if connected?(socket) do
         SecretQuestWeb.Presence.track_user(params["address"], %{id: params["address"]})
         SecretQuestWeb.Presence.subscribe()
         SecretQuestWeb.Endpoint.subscribe("tower:lobby")
-        stream(socket, :presences, SecretQuestWeb.Presence.list_online_users() |> Enum.uniq())
+        {:ok, riddle} = RiddleGenerator.generate_riddle()
+
+        riddle_part = riddle["riddle"]["description"] |> String.split((" ")) |> Enum.take_random(4) |> Enum.join(" ")
+
+        socket
+        |> assign(:riddle_part, riddle_part)
+        |> stream(:presences, SecretQuestWeb.Presence.list_online_users() |> Enum.uniq())
       else
         socket
       end
 
     {:ok, socket}
+  end
+
+  def handle_info(:tick, socket) do
+    if socket.assigns.running do
+      Process.send_after(self(), :tick, 1000)
+      {:noreply, update(socket, :timer, &(&1 - 1))}
+    else
+      {:noreply, socket}
+    end
   end
 
   def handle_event("send_message", %{"message" => message}, socket) do

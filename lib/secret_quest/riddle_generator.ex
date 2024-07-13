@@ -1,4 +1,4 @@
-defmodule RiddleGenerator do
+defmodule SecretQuest.RiddleGenerator do
   alias OpenaiEx.Chat
   alias OpenaiEx.ChatMessage
 
@@ -13,7 +13,14 @@ defmodule RiddleGenerator do
         model: "gpt-4o",
         messages: [
           ChatMessage.user(
-            "Can you generate a long riddle with an answer and return it in JSON format?"
+            "Can you generate a long riddle with an answer and return it in JSON format?
+            The JSON returned looks like this:
+            {
+              \"riddle\": {
+                \"description\": \"\",
+                \"answer\": \"\"
+            }
+            "
           )
         ],
         response_format: %{"type" => "json_object"}
