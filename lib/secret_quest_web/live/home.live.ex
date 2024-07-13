@@ -15,7 +15,7 @@ defmodule SecretQuestWeb.HomeLive do
       |> stream(:messages, [
         %{
           user: "floor-admin",
-          body: "Welcome to the first floor game! Please wait for other players to join.",
+          body: "Welcome to the first floor 🗺️ You have limited time to solve this riddle ⏲️ If you miss riddle pieces, get them from others 🧩 However you don't know if they lie or not 😈 If they lie, you can try to vote them out 🗳️ Eliminate all bad agents 💪 Good luck!",
           timestamp: DateTime.utc_now(),
           id: Ecto.UUID.generate()
         }
