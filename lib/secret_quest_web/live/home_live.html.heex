@@ -21,80 +21,40 @@
         Share Wrong Riddle Piece
       </button>
     </div>
-    <div class="chat-messages flex-grow overflow-y-auto p-3" id="chat-messages">
-      <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start">
-        Hello! How can I help you today?
-      </div>
+    <div
+      class="chat-messages flex-grow overflow-y-auto p-3"
+      id="chat-messages"
+      phx-update="stream"
+    >
+      <%= for {_, message} <- @streams.messages do %>
+        <%= if message.user == @address do %>
+          <div class="message user-message bg-blue-500 text-white rounded-lg p-2 mb-2 max-w-[70%] self-end ml-auto">
+            <%= message.body %>
+          </div>
+        <% else %>
+          <div class="message bot-message bg-gray-200 text-black rounded-lg p-2 mb-2 max-w-[70%] self-start">
+            <%= message.body %>
+          </div>
+        <% end %>
+      <% end %>
     </div>
-    <div class="chat-input flex p-3 border-t border-gray-300">
+    <form class="chat-input flex p-3 border-t border-gray-300" phx-submit="send_message">
       <input
         type="text"
-        id="message-input"
+        name="message"
         class="flex-grow p-2 border border-gray-300 rounded-l"
         placeholder="Type your message..."
+        id="message"
+        phx-hook="ResetAndSubmitInput"
+        autofocus
       />
       <button
         id="send-button"
+        type="submit"
         class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
       >
         Send
       </button>
-    </div>
+    </form>
   </div>
 </div>
-
-<script>
-  const chatMessages = document.getElementById('chat-messages');
-  const messageInput = document.getElementById('message-input');
-  const sendButton = document.getElementById('send-button');
-  const contactList = document.getElementById('contact-list');
-  const shareCorrectRiddle = document.getElementById('share-correct-riddle');
-  const shareWrongRiddle = document.getElementById('share-wrong-riddle');
-
-  function addMessage(message, isUser) {
-      const messageElement = document.createElement('div');
-      messageElement.classList.add('message', 'rounded-lg', 'p-2', 'mb-2', 'max-w-[70%]');
-      if (isUser) {
-          messageElement.classList.add('user-message', 'bg-blue-500', 'text-white', 'self-end', 'ml-auto');
-      } else {
-          messageElement.classList.add('bot-message', 'bg-gray-200', 'text-black', 'self-start');
-      }
-      messageElement.textContent = message;
-      chatMessages.appendChild(messageElement);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  function sendMessage() {
-      const message = messageInput.value.trim();
-      if (message) {
-          addMessage(message, true);
-          messageInput.value = '';
-          // Simulating a bot response
-          setTimeout(() => {
-              addMessage("I'm a simple bot. I don't have real responses yet!", false);
-          }, 1000);
-      }
-  }
-
-  sendButton.addEventListener('click', sendMessage);
-  messageInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-          sendMessage();
-      }
-  });
-
-  contactList.addEventListener('click', (e) => {
-      if (e.target.classList.contains('contact')) {
-          chatMessages.innerHTML = '';
-          addMessage(`Chat started with ${e.target.textContent}`, false);
-      }
-  });
-
-  shareCorrectRiddle.addEventListener('click', () => {
-      addMessage("You shared a correct riddle piece with the group.", false);
-  });
-
-  shareWrongRiddle.addEventListener('click', () => {
-      addMessage("You shared a wrong riddle piece.", false);
-  });
-</script>
