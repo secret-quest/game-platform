@@ -1,5 +1,12 @@
 # SecretQuest
 
+We create multiple repositories during this hackathon, but the most important ones are the following:
+
+ - Smart contract: https://github.com/secret-quest/TowerContract/blob/master/README.md
+ - Landing page/lobby before the game: https://github.com/secret-quest/login-page-v2
+ - Game platform: this repository
+ - Stake page morph: https://github.com/secret-quest/morph-test
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
